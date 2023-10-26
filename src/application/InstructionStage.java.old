@@ -1,0 +1,110 @@
+package application;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+import javafx.scene.text.Text;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+
+
+public class InstructionStage {
+	public static final int WINDOW_HEIGHT = 500;
+	public static final int WINDOW_WIDTH = 800;
+	private Scene scene;
+	private Stage stage;
+	private StackPane root;
+	private Canvas canvas;
+	private GraphicsContext inst;
+	private Button back;
+	private Text text;
+	//private GameTimer gametimer;
+	
+	
+	//the class constructor
+	public InstructionStage() {
+		this.root = new StackPane();
+		this.scene = new Scene(root, GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT,Color.CADETBLUE);	
+		this.canvas = new Canvas(GameStage.WINDOW_WIDTH,GameStage.WINDOW_HEIGHT);	
+		this.inst = canvas.getGraphicsContext2D();
+		//instantiate an animation timer
+		//this.gametimer = new GameTimer(this.gc,this.scene);
+	    text = new Text(0,15,"Hello, World!");
+	    text.setStyle("-fx-font-size: 100px;");
+	    text.setFill(Color.WHITE);
+	    
+		
+
+	}
+
+	//method to add the stage elements
+	public void setStage(Stage stage) {
+		this.stage = stage;
+		ImageView backgroundImageView = new ImageView(StartPage.bg);
+	    backgroundImageView.fitWidthProperty().bind(stage.widthProperty());
+	    backgroundImageView.fitHeightProperty().bind(stage.heightProperty());
+	        
+
+		//set stage elements here	  
+		this.root.getChildren().add(canvas);
+		this.root.getChildren().add(backgroundImageView);
+		this.root.getChildren().add(text);
+		this.root.getChildren().add(addButtons());
+		text.setLayoutY(100);
+		addButtons().setLayoutY(200);
+		this.stage.setTitle("Instructions");
+		this.stage.setScene(this.scene);
+		
+		this.stage.show();
+		
+		
+		
+		
+	}
+	
+	public Button addButtons() {
+		
+		 
+		//NEW GAME BUTTON
+		 back = new Button();
+			ImageView newGame = new ImageView(StartPage.ngamebtn);
+			setButtonProperties(newGame, back, 100);
+			back.setOnAction(new EventHandler<ActionEvent>() {
+			    @Override
+			    public void handle(ActionEvent event) {
+			    	
+			    	//print statement just to check if the button is clickable. 
+			    	System.out.println("Button clicked!");
+			    	
+			        // Create a new stage for the instruction window (InstructionStage.java)
+			    	StartPage newGame = new StartPage();
+					newGame.setStage(stage);
+			    }
+			});
+			
+		return back;
+		
+	}
+	
+	public void setButtonProperties(ImageView buttons, Button btntype, int yIncrement) {
+		buttons.setFitWidth(StartPage.BUTTON_WIDTH);
+        buttons.setFitHeight(StartPage.BUTTON_HEIGHT);
+        btntype.setStyle("-fx-background-color: transparent;");
+        btntype.setGraphic(buttons);
+        btntype.setLayoutX(0);
+        btntype.setLayoutY(yIncrement);
+	}
+	
+	
+	
+}
+
